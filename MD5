@@ -1,0 +1,10 @@
+c6e9e4793c5c2ca10ac41bd307ad6ba0 *DESCRIPTION
+70ff1e3874efbba608a76d680cdccc39 *NAMESPACE
+851a95c5f832030a131d51de55ce9f54 *R/Main.R
+c3f52f033f191485b0533b8488f13866 *R/RcppExports.R
+18d55cf732b209864095b98dcae14819 *man/Buddle_Main.Rd
+467b73fbf8f2dcefbbd650db7973489c *man/Buddle_Predict.Rd
+85c9a0dfbde5b59a6e942f9cb470b204 *src/FuncLib.cpp
+61059660eb073d93e00e8ee054237071 *src/Makevars
+61059660eb073d93e00e8ee054237071 *src/Makevars.win
+588f725f9c6f30f7db25fbf6a1a106d5 *src/RcppExports.cpp
