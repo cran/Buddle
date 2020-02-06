@@ -6,67 +6,52 @@
 
 using namespace Rcpp;
 
-// FindMaxIndex
-int FindMaxIndex(arma::vec x, double maxVal);
-RcppExport SEXP _Buddle_FindMaxIndex(SEXP xSEXP, SEXP maxValSEXP) {
+// Buddle_Main
+List Buddle_Main(arma::mat X_train, arma::mat T_train, arma::mat X_test, arma::mat T_test, int nBatch_Size, int nTotal_Iterations, arma::vec HiddenLayer, int bBatch, int bDrop, double drop_ratio, double d_learning_rate, double d_init_weight, arma::vec nstrVec, String strOpt, String strType, int bRand, String strDist, int bDisp);
+RcppExport SEXP _Buddle_Buddle_Main(SEXP X_trainSEXP, SEXP T_trainSEXP, SEXP X_testSEXP, SEXP T_testSEXP, SEXP nBatch_SizeSEXP, SEXP nTotal_IterationsSEXP, SEXP HiddenLayerSEXP, SEXP bBatchSEXP, SEXP bDropSEXP, SEXP drop_ratioSEXP, SEXP d_learning_rateSEXP, SEXP d_init_weightSEXP, SEXP nstrVecSEXP, SEXP strOptSEXP, SEXP strTypeSEXP, SEXP bRandSEXP, SEXP strDistSEXP, SEXP bDispSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type maxVal(maxValSEXP);
-    rcpp_result_gen = Rcpp::wrap(FindMaxIndex(x, maxVal));
+    Rcpp::traits::input_parameter< arma::mat >::type X_train(X_trainSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type T_train(T_trainSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X_test(X_testSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type T_test(T_testSEXP);
+    Rcpp::traits::input_parameter< int >::type nBatch_Size(nBatch_SizeSEXP);
+    Rcpp::traits::input_parameter< int >::type nTotal_Iterations(nTotal_IterationsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type HiddenLayer(HiddenLayerSEXP);
+    Rcpp::traits::input_parameter< int >::type bBatch(bBatchSEXP);
+    Rcpp::traits::input_parameter< int >::type bDrop(bDropSEXP);
+    Rcpp::traits::input_parameter< double >::type drop_ratio(drop_ratioSEXP);
+    Rcpp::traits::input_parameter< double >::type d_learning_rate(d_learning_rateSEXP);
+    Rcpp::traits::input_parameter< double >::type d_init_weight(d_init_weightSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type nstrVec(nstrVecSEXP);
+    Rcpp::traits::input_parameter< String >::type strOpt(strOptSEXP);
+    Rcpp::traits::input_parameter< String >::type strType(strTypeSEXP);
+    Rcpp::traits::input_parameter< int >::type bRand(bRandSEXP);
+    Rcpp::traits::input_parameter< String >::type strDist(strDistSEXP);
+    Rcpp::traits::input_parameter< int >::type bDisp(bDispSEXP);
+    rcpp_result_gen = Rcpp::wrap(Buddle_Main(X_train, T_train, X_test, T_test, nBatch_Size, nTotal_Iterations, HiddenLayer, bBatch, bDrop, drop_ratio, d_learning_rate, d_init_weight, nstrVec, strOpt, strType, bRand, strDist, bDisp));
     return rcpp_result_gen;
 END_RCPP
 }
-// yVec
-arma::vec yVec(arma::vec xVec, arma::mat ZList, arma::mat cList, arma::mat ZFinal, arma::vec cFinal, arma::mat W, arma::vec b, int nLayer, int q, int nModel);
-RcppExport SEXP _Buddle_yVec(SEXP xVecSEXP, SEXP ZListSEXP, SEXP cListSEXP, SEXP ZFinalSEXP, SEXP cFinalSEXP, SEXP WSEXP, SEXP bSEXP, SEXP nLayerSEXP, SEXP qSEXP, SEXP nModelSEXP) {
+// Buddle_Predict
+List Buddle_Predict(arma::mat X, List lW, List lb, List lParam);
+RcppExport SEXP _Buddle_Buddle_Predict(SEXP XSEXP, SEXP lWSEXP, SEXP lbSEXP, SEXP lParamSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type xVec(xVecSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type ZList(ZListSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type cList(cListSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type ZFinal(ZFinalSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type cFinal(cFinalSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type W(WSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int >::type nLayer(nLayerSEXP);
-    Rcpp::traits::input_parameter< int >::type q(qSEXP);
-    Rcpp::traits::input_parameter< int >::type nModel(nModelSEXP);
-    rcpp_result_gen = Rcpp::wrap(yVec(xVec, ZList, cList, ZFinal, cFinal, W, b, nLayer, q, nModel));
-    return rcpp_result_gen;
-END_RCPP
-}
-// MainFunc_Mat
-List MainFunc_Mat(arma::vec YTest, arma::mat XTest, arma::vec Y_Train, arma::mat X_Train, arma::mat t_Train, int nN, int nBatch, int nMethod, double lr, int nStep, int nLayer, int q, int r, int nModel);
-RcppExport SEXP _Buddle_MainFunc_Mat(SEXP YTestSEXP, SEXP XTestSEXP, SEXP Y_TrainSEXP, SEXP X_TrainSEXP, SEXP t_TrainSEXP, SEXP nNSEXP, SEXP nBatchSEXP, SEXP nMethodSEXP, SEXP lrSEXP, SEXP nStepSEXP, SEXP nLayerSEXP, SEXP qSEXP, SEXP rSEXP, SEXP nModelSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type YTest(YTestSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type XTest(XTestSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type Y_Train(Y_TrainSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type X_Train(X_TrainSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type t_Train(t_TrainSEXP);
-    Rcpp::traits::input_parameter< int >::type nN(nNSEXP);
-    Rcpp::traits::input_parameter< int >::type nBatch(nBatchSEXP);
-    Rcpp::traits::input_parameter< int >::type nMethod(nMethodSEXP);
-    Rcpp::traits::input_parameter< double >::type lr(lrSEXP);
-    Rcpp::traits::input_parameter< int >::type nStep(nStepSEXP);
-    Rcpp::traits::input_parameter< int >::type nLayer(nLayerSEXP);
-    Rcpp::traits::input_parameter< int >::type q(qSEXP);
-    Rcpp::traits::input_parameter< int >::type r(rSEXP);
-    Rcpp::traits::input_parameter< int >::type nModel(nModelSEXP);
-    rcpp_result_gen = Rcpp::wrap(MainFunc_Mat(YTest, XTest, Y_Train, X_Train, t_Train, nN, nBatch, nMethod, lr, nStep, nLayer, q, r, nModel));
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< List >::type lW(lWSEXP);
+    Rcpp::traits::input_parameter< List >::type lb(lbSEXP);
+    Rcpp::traits::input_parameter< List >::type lParam(lParamSEXP);
+    rcpp_result_gen = Rcpp::wrap(Buddle_Predict(X, lW, lb, lParam));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Buddle_FindMaxIndex", (DL_FUNC) &_Buddle_FindMaxIndex, 2},
-    {"_Buddle_yVec", (DL_FUNC) &_Buddle_yVec, 10},
-    {"_Buddle_MainFunc_Mat", (DL_FUNC) &_Buddle_MainFunc_Mat, 14},
+    {"_Buddle_Buddle_Main", (DL_FUNC) &_Buddle_Buddle_Main, 18},
+    {"_Buddle_Buddle_Predict", (DL_FUNC) &_Buddle_Buddle_Predict, 4},
     {NULL, NULL, 0}
 };
 
