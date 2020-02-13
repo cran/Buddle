@@ -1,6 +1,6 @@
 
-#ifndef __ARCSINH_H
-#define __ARCSINH_H
+#ifndef xxARCSINH_H
+#define xxARCSINH_H
 
 
 class ArcSinH{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  ArcSinH(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  ArcSinH(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -47,14 +47,17 @@ arma::mat ArcSinH::Get_dOut(){
 
 void ArcSinH::forward(arma::mat X){
   
-  Out = log( X + sqrt( 1+X%X )  );  
+  arma::mat XX = 1+X%X;
+  Out = log( X + sqrt( XX )  );  
   
 
 }
 
 
-void ArcSinH::backward(arma::mat _X, arma::mat _dOut){
-  dOut = _dOut/sqrt(1+_X%_X) ;
+void ArcSinH::backward(arma::mat xX, arma::mat xdOut){
+  
+  arma::mat XX = 1+xX%xX;
+  dOut = xdOut/ sqrt(XX) ;
 
 }
 

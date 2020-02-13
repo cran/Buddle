@@ -32,6 +32,13 @@ true.label      = c("setosa", "virginica", "versicolor","setosa", "versicolor", 
 confusion.matrix = MakeConfusionMatrix(predicted.label, true.label, Label)
 precision = GetPrecision(confusion.matrix)
 
+confusion.matrix
+precision
+
+
+
+
+
 }
 \seealso{
 CheckNonNumeric(), GetPrecision(), FetchBuddle(), OneHot2Label(), Split2TrainTest(), TrainBuddle()

@@ -1,6 +1,6 @@
 
-#ifndef __DROPOUT_H
-#define __DROPOUT_H
+#ifndef xxDROPOUT_H
+#define xxDROPOUT_H
 
 
 class Dropout{
@@ -25,13 +25,13 @@ public:
     drop_ratio = 0;
   }
   
-  Dropout(int _p, int _n, int _bTest, double _drop_ratio) // Constructor
-    : Mask(_p, _n), Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Dropout(int xp, int xn, int xbTest, double xdrop_ratio) // Constructor
+    : Mask(xp, xn), Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
-    bTest = _bTest;
-    drop_ratio = _drop_ratio;
+    n = xn;
+    p = xp;
+    bTest = xbTest;
+    drop_ratio = xdrop_ratio;
     
     Mask.zeros();
     Out.zeros();
@@ -44,7 +44,7 @@ public:
   arma::mat Get_dOut();
   
   void forward(arma::mat X);
-  void backward(arma::mat _dOut);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -77,9 +77,9 @@ void Dropout::forward(arma::mat X){
 }
 
 
-void Dropout::backward(arma::mat _dOut){
+void Dropout::backward(arma::mat xdOut){
   
-  dOut = Mask % _dOut;  
+  dOut = Mask % xdOut;  
   
 }
 

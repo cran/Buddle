@@ -1,6 +1,6 @@
 
-#ifndef __ELLIOTSIG_H
-#define __ELLIOTSIG_H
+#ifndef xxELLIOTSIG_H
+#define xxELLIOTSIG_H
 
 
 class ElliotSig{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  ElliotSig(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  ElliotSig(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -53,8 +53,8 @@ void ElliotSig::forward(arma::mat X){
 }
 
 
-void ElliotSig::backward(arma::mat _X, arma::mat _dOut){
-  dOut = _dOut/  ((1+ abs(_X)) % (1+ abs(_X))) ;
+void ElliotSig::backward(arma::mat xX, arma::mat xdOut){
+  dOut = xdOut/  ((1+ abs(xX)) % (1+ abs(xX))) ;
 
 }
 

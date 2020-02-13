@@ -1,6 +1,6 @@
 
-#ifndef __BUDDLE_H
-#define __BUDDLE_H
+#ifndef xxBUDDLE_H
+#define xxBUDDLE_H
 
 
 class Buddle{
@@ -59,11 +59,11 @@ public:
     n=1;
   }
   
-  Buddle(int _p, int _r, int _n, int _nHiddenLayer, arma::vec _HiddenLayer, String _strType, String* strVec, String _strOpt,
-      double _d_learning_rate, double _d_init_weight, int _bBatch, int _bDrop, int _bTest, double _drop_ratio, 
-      int _bRand, String _strDist) // Constructor
-    : sml(SoftmaxLoss(_r, _n)), l2loss(L2loss(_r, _n)), HiddenLayer(_nHiddenLayer), 
-      bOut(_r,_n), mOut(_r, _n), mEntropy(_n,1), dOut(_r,_n), Final_dOut(_p,_n) { // Default matrix member variable initialization
+  Buddle(int xp, int xr, int xn, int xnHiddenLayer, arma::vec xHiddenLayer, String xstrType, String* strVec, String xstrOpt,
+      double xd_learning_rate, double xd_init_weight, int xbBatch, int xbDrop, int xbTest, double xdrop_ratio, 
+      int xbRand, String xstrDist) // Constructor
+    : sml(SoftmaxLoss(xr, xn)), l2loss(L2loss(xr, xn)), HiddenLayer(xnHiddenLayer), 
+      bOut(xr,xn), mOut(xr, xn), mEntropy(xn,1), dOut(xr,xn), Final_dOut(xp,xn) { // Default matrix member variable initialization
     
     
     loss = 0;
@@ -73,30 +73,30 @@ public:
     mOut.zeros();
     mEntropy.zeros();
     
-    p = _p;
-    r = _r;
-    n = _n;
-    d_init_weight = _d_init_weight;
-    d_learning_rate = _d_learning_rate;
+    p = xp;
+    r = xr;
+    n = xn;
+    d_init_weight = xd_init_weight;
+    d_learning_rate = xd_learning_rate;
     
     
-    strType = _strType;
-    strOpt = _strOpt;
+    strType = xstrType;
+    strOpt = xstrOpt;
     
     
-    bRand=_bRand;
-    strDist=_strDist;
+    bRand=xbRand;
+    strDist=xstrDist;
     
     
     /////////////////
-    bBatch = _bBatch; 
-    bDrop = _bDrop;
-    bTest = _bTest;
-    drop_ratio = _drop_ratio;
+    bBatch = xbBatch; 
+    bDrop = xbDrop;
+    bTest = xbTest;
+    drop_ratio = xdrop_ratio;
     //////////////////////
     
-    nHiddenLayer = _nHiddenLayer;
-    HiddenLayer = _HiddenLayer;
+    nHiddenLayer = xnHiddenLayer;
+    HiddenLayer = xHiddenLayer;
     
     //Here!!!!
     
@@ -159,20 +159,20 @@ public:
   void Set_loss();
   void Set_Accuracy(arma::mat t_Mat);
   
-  void Set_Arr_Layer(Layer* _Arr_Layer);
-  void forward(arma::mat X, arma::mat _t);
+  void Set_Arr_Layer(Layer* xArr_Layer);
+  void forward(arma::mat X, arma::mat xt);
   void forward_predict(arma::mat X);
   
-  void backward(arma::mat X, arma::mat _t);
+  void backward(arma::mat X, arma::mat xt);
   
 };
 
 
-void Buddle::Set_Arr_Layer(Layer* _Arr_Layer){
+void Buddle::Set_Arr_Layer(Layer* xArr_Layer){
   
   for(int i=1;i<=(nHiddenLayer+1);i++){
-    Arr_Layer[i-1].Set_W( _Arr_Layer[i-1].Get_W() )  ;
-    Arr_Layer[i-1].Set_b( _Arr_Layer[i-1].Get_b() )  ;
+    Arr_Layer[i-1].Set_W( xArr_Layer[i-1].Get_W() )  ;
+    Arr_Layer[i-1].Set_b( xArr_Layer[i-1].Get_b() )  ;
   }
   
 }
@@ -185,7 +185,7 @@ Layer* Buddle::Get_Arr_Layer(){
 
 
 
-void Buddle::forward(arma::mat X, arma::mat _t){
+void Buddle::forward(arma::mat X, arma::mat xt){
   
   
   for(int i=1;i<= (nHiddenLayer+1);i++){
@@ -207,12 +207,12 @@ void Buddle::forward(arma::mat X, arma::mat _t){
   bOut = Arr_Layer[nHiddenLayer].Get_Out() ;
   
   if(strType == strClassification){
-    sml.forward(bOut, _t);
+    sml.forward(bOut, xt);
     mOut = sml.Get_y();
     mEntropy = sml.Get_Entropy();
     
   }else{
-    l2loss.forward(bOut, _t);
+    l2loss.forward(bOut, xt);
     mOut = l2loss.Get_y();
     
   }
@@ -266,16 +266,16 @@ void Buddle::forward_predict(arma::mat X){
 
 
 
-void Buddle::backward(arma::mat X, arma::mat _t){
+void Buddle::backward(arma::mat X, arma::mat xt){
   
   if(strType == strClassification){
-    sml.backward(_t);
+    sml.backward(xt);
     dOut = sml.Get_dOut();
     
     
   }else{
     
-    l2loss.backward(_t);
+    l2loss.backward(xt);
     dOut = l2loss.Get_dOut();
     
   }

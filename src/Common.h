@@ -1,6 +1,6 @@
 
-#ifndef __COMMON_H
-#define __COMMON_H
+#ifndef xxCOMMON_H
+#define xxCOMMON_H
 
 //#include <RcppArmadillo.h>
 
@@ -22,13 +22,13 @@ arma::mat Con2OneHotEncoding(arma::mat X);
 
 
 arma::mat fi(arma::mat v, String strDist);
-arma::mat dfi(arma::mat v, arma::mat Out, arma::mat _dOut, String strDist);
+arma::mat dfi(arma::mat v, arma::mat Out, arma::mat xdOut, String strDist);
 
 
-arma::mat dfi(arma::mat v, arma::mat Out, arma::mat _dOut, String strDist){
+arma::mat dfi(arma::mat v, arma::mat Out, arma::mat xdOut, String strDist){
   
-  int q = _dOut.n_rows;           ///// V:q2xn  Out:qxn   dOut:q2xn  _dOut:qxn  
-  int n = _dOut.n_cols;
+  int q = xdOut.n_rows;           ///// V:q2xn  Out:qxn   dOut:q2xn  _dOut:qxn  
+  int n = xdOut.n_cols;
   int q2 = q+2;
   
   arma::mat dOut(q2, n);
@@ -47,16 +47,16 @@ arma::mat dfi(arma::mat v, arma::mat Out, arma::mat _dOut, String strDist){
   for(int j=1;j<=n;j++){
     mu = v(0,j-1);
     sig = v(1,j-1);
-    dOut(0,j-1) = accu(_dOut.col(j-1) );
-    dOut(1,j-1) = accu( ( (Out.col(j-1) - mu)/(sig+del) )  % _dOut.col(j-1)  );
+    dOut(0,j-1) = accu(xdOut.col(j-1) );
+    dOut(1,j-1) = accu( ( (Out.col(j-1) - mu)/(sig+del) )  % xdOut.col(j-1)  );
     
     if(strDist==strExponential){
-      dOut(0,j-1) = accu( -log(1- v.submat(2,(j-1),(q2-1),(j-1)) ) % _dOut.col(j-1) );
+      dOut(0,j-1) = accu( -log(1- v.submat(2,(j-1),(q2-1),(j-1)) ) % xdOut.col(j-1) );
     }else{
       mu = v(0,j-1);
       sig = v(1,j-1);
-      dOut(0,j-1) = accu(_dOut.col(j-1) );
-      dOut(1,j-1) = accu( ( (Out.col(j-1) - mu)/(sig+del) )  % _dOut.col(j-1)  );
+      dOut(0,j-1) = accu(xdOut.col(j-1) );
+      dOut(1,j-1) = accu( ( (Out.col(j-1) - mu)/(sig+del) )  % xdOut.col(j-1)  );
       
     }
     
@@ -81,7 +81,7 @@ arma::mat dfi(arma::mat v, arma::mat Out, arma::mat _dOut, String strDist){
       }
       
       
-      dOut(i-1,j-1) = val3 * _dOut(i-2-1,j-1); 
+      dOut(i-1,j-1) = val3 * xdOut(i-2-1,j-1); 
     }
     
   }

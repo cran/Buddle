@@ -25,6 +25,7 @@ X[2,3] = NA
 
 lst = CheckNonNumeric(X)
 
+lst
 
 }
 \seealso{

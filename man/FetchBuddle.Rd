@@ -32,15 +32,12 @@ Yield prediction (softmax value or value) for regression and classification for 
 
 data(mnist_data)
 
-Img_Mat = mnist_data$Images
-Img_Label = mnist_data$Labels
-
-N = 100                       
-
-X1 = Img_Mat[1:N, ]            ### X1: 100 x 784 matrix
-Y1 = Img_Label[1:N]          ### Y1: 100 x 1 vector
+X1 = mnist_data$Images       ### X1: 100 x 784 matrix
+Y1 = mnist_data$Labels       ### Y1: 100 x 1 vector
 
 
+
+############################# Train Buddle
 
 lst = TrainBuddle(Y1, X1, train.ratio=0.6, arrange=TRUE, batch.size=10, total.iter = 100, 
                  hiddenlayer=c(20, 10), batch.norm=TRUE, drop=TRUE, 
@@ -53,10 +50,12 @@ lb = lst[[2]]
 lParam = lst[[3]]
 
 
-X2 = Img_Mat[(N+1):(N+20), ]                  ### X2: 20-by-784 matrix
-#'
+X2 = matrix(rnorm(20*784,0,1), 20,784)  ## Genderate a 20-by-784 matrix
 
-FetchBuddle(X2, lW, lb, lParam)
+lst = FetchBuddle(X2, lW, lb, lParam)   ## Pass X2 to FetchBuddle for prediction
+
+
+
 
 
 }

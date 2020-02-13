@@ -1,6 +1,6 @@
 
-#ifndef __SOFTPLUS_H
-#define __SOFTPLUS_H
+#ifndef xxSOFTPLUS_H
+#define xxSOFTPLUS_H
 
 
 class SoftPlus{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  SoftPlus(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  SoftPlus(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -53,8 +53,8 @@ void SoftPlus::forward(arma::mat X){
 }
 
 
-void SoftPlus::backward(arma::mat _X, arma::mat _dOut){
-  dOut = _dOut/(1+exp(- _X));
+void SoftPlus::backward(arma::mat xX, arma::mat xdOut){
+  dOut = xdOut/(1+exp(- xX));
 
 }
 

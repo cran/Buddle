@@ -1,6 +1,6 @@
 
-#ifndef __LEAKYRELU_H
-#define __LEAKYRELU_H
+#ifndef xxLEAKYRELU_H
+#define xxLEAKYRELU_H
 
 
 class LeakyRelu{
@@ -20,11 +20,11 @@ public:
     p=0;
   }
   
-  LeakyRelu(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  LeakyRelu(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
 
     Out.zeros();
     dOut.zeros();
@@ -35,7 +35,7 @@ public:
   arma::mat Get_dOut();
   
   void forward(arma::mat X);
-  void backward(arma::mat _dOut);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -56,9 +56,9 @@ void LeakyRelu::forward(arma::mat X){
 }
 
 
-void LeakyRelu::backward(arma::mat _dOut){
+void LeakyRelu::backward(arma::mat xdOut){
   
-  dOut = Out % _dOut;  
+  dOut = Out % xdOut;  
   
   
 }

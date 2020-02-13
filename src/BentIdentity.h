@@ -1,6 +1,6 @@
 
-#ifndef __BENTIDENTITY_H
-#define __BENTIDENTITY_H
+#ifndef xxBENTIDENTITY_H
+#define xxBENTIDENTITY_H
 
 
 class BentIdentity{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  BentIdentity(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  BentIdentity(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -47,14 +47,16 @@ arma::mat BentIdentity::Get_dOut(){
 
 void BentIdentity::forward(arma::mat X){
   
-  Out = ( X + ( sqrt(X%X +1 ) -1 )/2  ) ;  
+  arma::mat XX = X%X+1;
+  Out = ( X + ( sqrt(XX) -1 )/2  ) ;  
   
 
 }
 
 
-void BentIdentity::backward(arma::mat _X, arma::mat _dOut){
-  dOut = _dOut% (1+ 0.5*_X /sqrt(1+_X%_X) ) ;
+void BentIdentity::backward(arma::mat xX, arma::mat xdOut){
+  arma::mat XX = xX%xX+1;
+  dOut = xdOut% (1+ 0.5*xX /sqrt(1+xX%xX) ) ;
 
 }
 

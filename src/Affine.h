@@ -1,6 +1,6 @@
 
-#ifndef __AFFINE_H
-#define __AFFINE_H
+#ifndef xxAFFINE_H
+#define xxAFFINE_H
 
 
 class Affine{
@@ -39,17 +39,17 @@ public:
     n=1;
   }
   
-  Affine(int _q, int _p, int _n, int _bRand, String _strDist) // Constructor
-    : Out(_q, _n), dOut(_p, _n), dW(_q, _p), db(_q, 1),
-      W(_q, _p), b(_q,1), finv(FInv(_q, 1, _strDist)), v((_q+2),1), dv((_q+2),1) { // Default matrix member variable initialization
+  Affine(int xq, int xp, int xn, int xbRand, String xstrDist) // Constructor
+    : Out(xq, xn), dOut(xp, xn), dW(xq, xp), db(xq, 1),
+      W(xq, xp), b(xq,1), finv(FInv(xq, 1, xstrDist)), v((xq+2),1), dv((xq+2),1) { // Default matrix member variable initialization
     
     
-    q = _q;
-    p = _p;
-    n = _n;
+    q = xq;
+    p = xp;
+    n = xn;
     
-    bRand = _bRand;
-    strDist = _strDist;
+    bRand = xbRand;
+    strDist = xstrDist;
     
     Out.zeros();
     dOut.zeros();
@@ -76,14 +76,14 @@ public:
   arma::mat Get_dv();
   
   
-  void Set_W(arma::mat _W);
-  void Set_b(arma::mat _b);
+  void Set_W(arma::mat xW);
+  void Set_b(arma::mat xb);
   
-  void Set_v(arma::mat _v);
+  void Set_v(arma::mat xv);
   
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -109,18 +109,18 @@ arma::mat Affine::Get_dv(){
 }
 
 
-void Affine::Set_W(arma::mat _W){
-  W = _W;
+void Affine::Set_W(arma::mat xW){
+  W = xW;
 }
 
-void Affine::Set_b(arma::mat _b){
-  b = _b;
+void Affine::Set_b(arma::mat xb){
+  b = xb;
 }
 
-void Affine::Set_v(arma::mat _v){
-  v = _v;
+void Affine::Set_v(arma::mat xv){
+  v = xv;
   
-  v.rows(0,1) = _v.rows(0,1);
+  v.rows(0,1) = xv.rows(0,1);
   
   arma::vec x(q);
   x.randu(q);
@@ -132,12 +132,12 @@ void Affine::Set_v(arma::mat _v){
 }
 
 
-void Affine::forward(arma::mat _X){
+void Affine::forward(arma::mat xX){
   
   arma::mat OneMat(1, n);
   OneMat.ones();
 
-  Out = W*_X+ b*OneMat;
+  Out = W*xX+ b*OneMat;
   
   if(bRand==1){
     
@@ -149,11 +149,11 @@ void Affine::forward(arma::mat _X){
 }
 
 
-void Affine::backward(arma::mat _X, arma::mat _dOut){
+void Affine::backward(arma::mat xX, arma::mat xdOut){
 
-  dW = _dOut* _X.t();
-  db = sum(_dOut, 1);
-  dOut = W.t()* _dOut;
+  dW = xdOut* xX.t();
+  db = sum(xdOut, 1);
+  dOut = W.t()* xdOut;
   
   if(bRand==1){
     
@@ -190,13 +190,13 @@ public:
     n=1;
   }
   
-  gAffine( int _q, int _p, int _n, int _bRand, String _strDist, String _strLink) // Constructor
-    : Affine(_q, _p, _n, _bRand, _strDist), V((_q+2), _n), dV((_q+2), _n), 
-      tmp_Out(_q,n), tmp_dOut( (_q+2),n), link(Link(_q, _n, _strLink)), finv2(FInv(_q, n, _strLink)){
+  gAffine( int xq, int xp, int xn, int xbRand, String xstrDist, String xstrLink) // Constructor
+    : Affine(xq, xp, xn, xbRand, xstrDist), V((xq+2), xn), dV((xq+2), xn), 
+      tmp_Out(xq,n), tmp_dOut( (xq+2),n), link(Link(xq, xn, xstrLink)), finv2(FInv(xq, n, xstrLink)){
       
-      strLink = _strLink;
+      strLink = xstrLink;
       
-      q2 = _q+2;  
+      q2 = xq+2;  
       V.zeros();
       dV.zeros();
       
@@ -205,17 +205,17 @@ public:
   }
   
   arma::mat Get_dV();
-  void Set_V(arma::mat _V);
+  void Set_V(arma::mat xV);
   
-  void gforward(arma::mat _X);
-  void gbackward(arma::mat _X, arma::mat _dOut);
+  void gforward(arma::mat xX);
+  void gbackward(arma::mat xX, arma::mat xdOut);
   
 
 };
 
-void gAffine::Set_V(arma::mat _V){
+void gAffine::Set_V(arma::mat xV){
   
-  V.rows(0,1) = _V.rows(0,1);
+  V.rows(0,1) = xV.rows(0,1);
   
   arma::mat tmpU(q,n);
   tmpU.randu(q,n);
@@ -226,9 +226,9 @@ void gAffine::Set_V(arma::mat _V){
 
 
 
-void gAffine::gforward(arma::mat _X){
+void gAffine::gforward(arma::mat xX){
   
-  forward(_X);            ///// Get Out  after affine layer
+  forward(xX);            ///// Get Out  after affine layer
   tmp_Out = Out;          ////// Out:qxn                      
   link.forward(Out);
   V = link.Get_Out();     ///// Pass Out to link function to make V: q2xn
@@ -239,15 +239,15 @@ void gAffine::gforward(arma::mat _X){
 }
 
 
-void gAffine::gbackward(arma::mat _X, arma::mat _dOut){
+void gAffine::gbackward(arma::mat xX, arma::mat xdOut){
                                  ////  _dOut :qxn 
-  finv2.backward(V, _dOut);    ////   Get dOut after FInv
+  finv2.backward(V, xdOut);    ////   Get dOut after FInv
   tmp_dOut = finv2.Get_dOut();   //// tmp_dOut: q2xn
   link.backward(tmp_Out, tmp_dOut);
   
-  _dOut = link.Get_dOut();          /////_dOut:qxn
+  xdOut = link.Get_dOut();          /////_dOut:qxn
   
-  backward(_X, _dOut);        ///// Pass _dOut to affine layer 
+  backward(xX, xdOut);        ///// Pass _dOut to affine layer 
                               /////  Get dW, db, dV
   
 }

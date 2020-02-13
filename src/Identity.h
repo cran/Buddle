@@ -1,6 +1,6 @@
 
-#ifndef __IDENTITY_H
-#define __IDENTITY_H
+#ifndef xxIDENTITY_H
+#define xxIDENTITY_H
 
 
 class Identity{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  Identity(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Identity(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -53,8 +53,8 @@ void Identity::forward(arma::mat X){
 }
 
 
-void Identity::backward(arma::mat _dOut){
-  dOut = _dOut;
+void Identity::backward(arma::mat xdOut){
+  dOut = xdOut;
 
 }
 

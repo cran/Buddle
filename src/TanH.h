@@ -1,6 +1,6 @@
 
-#ifndef __TANH_H
-#define __TANH_H
+#ifndef xxTANH_H
+#define xxTANH_H
 
 
 class TanH{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  TanH(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  TanH(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -53,10 +53,10 @@ void TanH::forward(arma::mat X){
 }
 
 
-void TanH::backward(arma::mat _dOut){
+void TanH::backward(arma::mat xdOut){
 
   
-  dOut =  (1 -  Out%Out ) % _dOut;
+  dOut =  (1 -  Out%Out ) % xdOut;
 
 
 }

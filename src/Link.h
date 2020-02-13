@@ -1,6 +1,6 @@
 
-#ifndef __LINK_H
-#define __LINK_H
+#ifndef xxLINK_H
+#define xxLINK_H
 
 
 class Link{
@@ -25,14 +25,14 @@ public:
     n=1;
   }
   
-  Link(int _q, int _n, String _strLink ) // Constructor
-    : Out((_q+2), _n), dOut(_q, _n) { // Default matrix member variable initialization
+  Link(int xq, int xn, String xstrLink ) // Constructor
+    : Out((xq+2), xn), dOut(xq, xn) { // Default matrix member variable initialization
     
-    q = _q;
-    n = _n;
+    q = xq;
+    n = xn;
     q2 = q+2;
     
-    strLink = _strLink;
+    strLink = xstrLink;
 
     Out.zeros();
     dOut.zeros();
@@ -43,7 +43,7 @@ public:
   arma::mat Get_dOut();
 
   void forward(arma::mat X);
-  void backward(arma::mat X, arma::mat _dOut);
+  void backward(arma::mat X, arma::mat xdOut);
   
   
 };
@@ -100,9 +100,9 @@ void Link::forward(arma::mat X){
   
 }
 
-void Link::backward(arma::mat X, arma::mat _dOut){
+void Link::backward(arma::mat X, arma::mat xdOut){
 
-  double del=1e-5;                        /// X:qxn   _dOut: q2xn
+  double del=1e-5;                        /// X:qxn   xdOut: q2xn
   double mu,sig;                          //// dOut: qxn, Out:q2xn
   arma::vec z(q);
   double d1,d2;
@@ -113,25 +113,25 @@ void Link::backward(arma::mat X, arma::mat _dOut){
     
     if(strLink == strNormal){
       z = ( X.col(i-1)-mu )/sig;
-      d1 = _dOut(0, i-1);
-      d2 = _dOut(1, i-1);
+      d1 = xdOut(0, i-1);
+      d2 = xdOut(1, i-1);
       dOut.col(i-1) = (d1+d2*z)/q;
     }else if(strLink == strPoisson){
       z.ones();
-      d1 = _dOut(0, i-1);
-      d2 = _dOut(1, i-1);
+      d1 = xdOut(0, i-1);
+      d2 = xdOut(1, i-1);
       dOut.col(i-1) = (d1+d2*z/(2*sig))/q;
       
     }else if(strLink == strGamma){
       z.ones();
-      d1 = _dOut(0, i-1);
-      d2 = _dOut(1, i-1);
+      d1 = xdOut(0, i-1);
+      d2 = xdOut(1, i-1);
       dOut.col(i-1) = (d1+d2*z)/q;
       
     }else{
       z = ( X.col(i-1)-mu )/sig;
-      d1 = _dOut(0, i-1);
-      d2 = _dOut(1, i-1);
+      d1 = xdOut(0, i-1);
+      d2 = xdOut(1, i-1);
       dOut.col(i-1) = (d1+d2*z)/q;
     }
 

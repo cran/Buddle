@@ -1,6 +1,6 @@
 
-#ifndef __SOFTMAXLOSS_H
-#define __SOFTMAXLOSS_H
+#ifndef xxSOFTMAXLOSS_H
+#define xxSOFTMAXLOSS_H
 
 class SoftmaxLoss{
 
@@ -24,11 +24,11 @@ public:
     n = 1;
   }
   
-  SoftmaxLoss(int _r, int _n) // Constructor
-    : Entropy(_n,1), y(_r, _n), dOut(_r,_n) { // Default matrix member variable initialization
+  SoftmaxLoss(int xr, int xn) // Constructor
+    : Entropy(xn,1), y(xr, xn), dOut(xr,xn) { // Default matrix member variable initialization
     
-    r = _r;
-    n = _n;
+    r = xr;
+    n = xn;
     
     loss= 0;
     
@@ -42,9 +42,9 @@ public:
   arma::mat Get_dOut();
   double Get_loss();
   
-  void forward(arma::mat X, arma::mat _t); 
+  void forward(arma::mat X, arma::mat xt); 
   void forward_predict(arma::mat X); 
-  void backward(arma::mat _t);
+  void backward(arma::mat xt);
   
 };
 
@@ -66,11 +66,11 @@ double SoftmaxLoss::Get_loss(){
   return loss;
 }
 
-void SoftmaxLoss::forward(arma::mat X, arma::mat _t){
+void SoftmaxLoss::forward(arma::mat X, arma::mat xt){
   
   double eps = 1e-7;
   y = Softmax(X);
-  arma::mat out = -sum( _t %  log(y+eps), 0);
+  arma::mat out = -sum( xt %  log(y+eps), 0);
   Entropy = out.t();
   loss = accu(Entropy)/n;
 }
@@ -85,9 +85,9 @@ void SoftmaxLoss::forward_predict(arma::mat X){
 
 
 
-void SoftmaxLoss::backward(arma::mat _t){
+void SoftmaxLoss::backward(arma::mat xt){
 
-  dOut = (y - _t) / n;
+  dOut = (y - xt) / n;
   
 }
 

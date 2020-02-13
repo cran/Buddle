@@ -1,6 +1,6 @@
 
-#ifndef __RELU_H
-#define __RELU_H
+#ifndef xxRELU_H
+#define xxRELU_H
 
 
 class Relu{
@@ -20,11 +20,11 @@ public:
     p=0;
   }
   
-  Relu(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Relu(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
 
     Out.zeros();
     dOut.zeros();
@@ -35,7 +35,7 @@ public:
   arma::mat Get_dOut();
   
   void forward(arma::mat X);
-  void backward(arma::mat _dOut);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -55,16 +55,16 @@ void Relu::forward(arma::mat X){
 }
 
 
-void Relu::backward(arma::mat _dOut){
+void Relu::backward(arma::mat xdOut){
   
-  dOut = Out % _dOut;  
+  dOut = Out % xdOut;  
   
   // arma::vec x(p);
   // x.zeros();
   // 
   // for(int i=1;i<=n;i++){
   //   x = Out.col(i-1);
-  //   dOut.col(i-1) =  x  % _dOut.col(i-1) ;
+  //   dOut.col(i-1) =  x  % xdOut.col(i-1) ;
   // }
 }
 

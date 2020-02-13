@@ -11,13 +11,13 @@
 data(mnist_data)
 }
 \description{
-A dataset containing 10,000 images of handwritten digits.
+A dataset containing 100 images of handwritten digits.
 }
 \details{
 #'@format A list containing a matrix of image data and a vector of labels:
 \describe{
-  \item{Images}{10000-by-784 matrix of image data of handwritten digits.}
-  \item{Labels}{10000-by-1 vector of labels of handwritten digits.}
+  \item{Images}{100-by-784 matrix of image data of handwritten digits.}
+  \item{Labels}{100-by-1 vector of labels of handwritten digits.}
   
 }
 }

@@ -1,6 +1,6 @@
 
-#ifndef __MOMENTUM_H
-#define __MOMENTUM_H
+#ifndef xxMOMENTUM_H
+#define xxMOMENTUM_H
 
 
 class Momentum{
@@ -16,9 +16,9 @@ public:
     d_learning_rate=0;
   }
   
-  Momentum(double _d_learning_rate) { // Default matrix member variable initialization
+  Momentum(double xd_learning_rate) { // Default matrix member variable initialization
     
-    d_learning_rate = _d_learning_rate;
+    d_learning_rate = xd_learning_rate;
     
   }
 

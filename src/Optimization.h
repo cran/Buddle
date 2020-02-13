@@ -1,6 +1,6 @@
 
-#ifndef __OPTIMIZATION_H
-#define __OPTIMIZATION_H
+#ifndef xxOPTIMIZATION_H
+#define xxOPTIMIZATION_H
 
 class Optimization{
 
@@ -52,19 +52,19 @@ public:
     p = 1;
   }
   
-  Optimization(int _q, int _p, int _bRand, double _d_learning_rate, String _strOpt) // Constructor
-    : W(_q,_p), b(_q,1), dW(_q,_p), db(_q,1), v((_q+2),1), dv((_q+2), 1),  
-      vW(_q,_p), vb(_q,1), vv((_q+2),1), 
-      hW(_q,_p), hb(_q,1), hv((_q+2),1), 
-      mW(_q,_p), mb(_q,1), mv((_q+2),1), 
-      nW(_q,_p), nb(_q,1), nv((_q+2),1)  { // Default matrix member variable initialization
+  Optimization(int xq, int xp, int xbRand, double xd_learning_rate, String xstrOpt) // Constructor
+    : W(xq,xp), b(xq,1), dW(xq,xp), db(xq,1), v((xq+2),1), dv((xq+2), 1),  
+      vW(xq,xp), vb(xq,1), vv((xq+2),1), 
+      hW(xq,xp), hb(xq,1), hv((xq+2),1), 
+      mW(xq,xp), mb(xq,1), mv((xq+2),1), 
+      nW(xq,xp), nb(xq,1), nv((xq+2),1)  { // Default matrix member variable initialization
     
-    q = _q;
-    p = _p;
+    q = xq;
+    p = xp;
     
-    bRand = _bRand;
+    bRand = xbRand;
     
-    d_learning_rate=_d_learning_rate;
+    d_learning_rate=xd_learning_rate;
     momentum_alpha = 0.9;
     d_decay = 0.99;
     nIter=0;
@@ -72,7 +72,7 @@ public:
     beta1=0.9;
     beta2=0.999;
     
-    strOpt = _strOpt;
+    strOpt = xstrOpt;
     
     W.zeros();
     b.zeros();
@@ -84,13 +84,22 @@ public:
     
     vW.zeros();
     vb.zeros();
+    vv.zeros();
+    
     hW.zeros();
     hb.zeros();
+    hv.zeros();
     
     mW.zeros();
     mb.zeros();
+    mv.zeros();
+    
     nW.zeros();
     nb.zeros();
+    nv.zeros();
+    
+    
+    
 
   }
   
@@ -99,13 +108,13 @@ public:
   arma::mat Get_v();
   
   
-  void Set_W(arma::mat _W);
-  void Set_b(arma::mat _b);
-  void Set_dW(arma::mat _dW);
-  void Set_db(arma::mat _db);
+  void Set_W(arma::mat xW);
+  void Set_b(arma::mat xb);
+  void Set_dW(arma::mat xdW);
+  void Set_db(arma::mat xdb);
   
-  void Set_v(arma::mat _v);
-  void Set_dv(arma::mat _dv);
+  void Set_v(arma::mat xv);
+  void Set_dv(arma::mat xdv);
   
   
   void Update();
@@ -126,28 +135,28 @@ arma::mat Optimization::Get_v(){
 }
 
 
-void Optimization::Set_W(arma::mat _W){
-  W = _W;
+void Optimization::Set_W(arma::mat xW){
+  W = xW;
 }
 
-void Optimization::Set_b(arma::mat _b){
-  b = _b;
+void Optimization::Set_b(arma::mat xb){
+  b = xb;
 }
 
-void Optimization::Set_dW(arma::mat _dW){
-  dW = _dW;
+void Optimization::Set_dW(arma::mat xdW){
+  dW = xdW;
 }
 
-void Optimization::Set_db(arma::mat _db){
-  db = _db;
+void Optimization::Set_db(arma::mat xdb){
+  db = xdb;
 }
 
-void Optimization::Set_v(arma::mat _v){
-  v = _v;
+void Optimization::Set_v(arma::mat xv){
+  v = xv;
 }
 
-void Optimization::Set_dv(arma::mat _dv){
-  dv = _dv;
+void Optimization::Set_dv(arma::mat xdv){
+  dv = xdv;
 }
 
 
@@ -252,10 +261,9 @@ void Optimization::Update(){
     
     
     if(bRand==1){
-      
       mv += (1-beta1)*(dv-mv);
       nv += (1-beta2)*(dv%dv - nv);
-      v -= d_lr_t*mb/sqrt(nv+delta);
+      v -= d_lr_t*mv/sqrt(nv+delta);
       
     }
     
@@ -271,7 +279,7 @@ void Optimization::Update(){
     
   }
   
-  v(1,0) = abs(v(1,0))+delta;   ////// The second element of v is sigma, and hence should be >0
+  v(1,0) = std::abs(v(1,0))+delta;   ////// The second element of v is sigma, and hence should be >0
   
 }
 

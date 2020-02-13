@@ -1,6 +1,6 @@
 
-#ifndef __BATCHNORM_H
-#define __BATCHNORM_H
+#ifndef xxBATCHNORM_H
+#define xxBATCHNORM_H
 
 
 class Batchnorm{
@@ -22,11 +22,11 @@ public:
   
   }
   
-  Batchnorm(int _p, int _n) // Constructor
-    : Original_X(_p, _n), Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Batchnorm(int xp, int xn) // Constructor
+    : Original_X(xp, xn), Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
 
     Original_X.zeros();
     Out.zeros();
@@ -38,7 +38,7 @@ public:
   arma::mat Get_dOut();
   
   void forward(arma::mat X);
-  void backward(arma::mat _dOut);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -66,14 +66,14 @@ void Batchnorm::forward(arma::mat X){
 }
 
 
-void Batchnorm::backward(arma::mat _dOut){
+void Batchnorm::backward(arma::mat xdOut){
   
   arma::vec xi;
   arma::vec di;
   
   for(int i = 1;i<=n; i++){
     xi = Original_X.col(i-1);
-    di = _dOut.col(i-1);
+    di = xdOut.col(i-1);
     dOut.col(i-1) = BackwardBatchNorm(xi, di);
   }
   

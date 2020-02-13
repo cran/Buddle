@@ -1,8 +1,8 @@
 Package: Buddle
 Type: Package
 Title: A Deep Learning for Statistical Classification and Regression
-        Analysis
-Version: 2.0
+        Analysis with Random Effects
+Version: 2.0.1
 Date: 2020-02-04
 Author: Jiwoong Kim <jwboys26 at gmail.com>
 Maintainer: Jiwoong Kim <jwboys26@gmail.com>
@@ -10,10 +10,10 @@ Description: Statistical classification and regression have been popular among v
 Depends: R (>= 3.5.0)
 License: GPL-2
 LazyData: TRUE
-Imports: Rcpp (>= 0.12.17), plyr, stats, utils, graphics
+Imports: Rcpp (>= 0.12.17), plyr, stats, graphics
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.0.2
 NeedsCompilation: yes
-Packaged: 2020-02-06 12:01:55 UTC; Jason
+Packaged: 2020-02-11 13:27:23 UTC; Jason
 Repository: CRAN
-Date/Publication: 2020-02-06 12:40:02 UTC
+Date/Publication: 2020-02-13 09:30:10 UTC

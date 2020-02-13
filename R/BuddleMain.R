@@ -1,7 +1,7 @@
 
 #' Implementing Statistical Classification and Regression.
 #'
-#' Build a multi-layer feed-forward neural network model for statistical classification and regression analysis.
+#' Build a multi-layer feed-forward neural network model for statistical classification and regression analysis with random effects.
 #'@param formula.string a formula string or a vector of numeric values. When it is a string, it denotes a classification or regression equation, of the form label ~ predictors or response ~ predictors, where predictors are separated by + operator. If it is a numeric vector, it will be a label or a response variable of a classification or regression equation, respectively.
 #'@param data a data frame or a design matrix. When formula.string is a string, data should be a data frame which includes the label (or the response) and the predictors expressed in the formula string. When formula.string is a vector, i.e. a vector of labels or responses, data should be an nxp numeric matrix whose columns are predictors for further classification or regression.
 #'@param train.ratio a ratio that is used to split data into training and test sets. When data is an n-by-p matrix, the resulting train data will be a (train.ratio x n)-by-p matrix. The default is 0.7.
@@ -62,11 +62,24 @@
 #'# disp = TRUE                          #### Display intemeidate results during iterations.
 #'
 #'
+#'data(iris)
+#'
 #'lst = TrainBuddle("Species~Sepal.Width+Petal.Width", iris, train.ratio=0.6, 
 #'          arrange=TRUE, batch.size=10, total.iter = 100, hiddenlayer=c(20, 10), 
 #'          batch.norm=TRUE, drop=TRUE, drop.ratio=0.1, lr=0.1, init.weight=0.1, 
 #'          activation=c("Relu","SoftPlus"), optim="Nesterov", 
 #'          type = "Classification", rand.eff=TRUE, distr = "Normal", disp=TRUE)
+#'
+#'lW = lst$lW
+#'lb = lst$lb
+#'lParam = lst$lParam
+#'
+#'confusion.matrix = lst$confusion.matrix
+#'precision = lst$precision
+#'
+#'confusion.matrix
+#'precision
+#'
 #'
 #'### Another classification example 
 #'### Using mnist data
@@ -77,16 +90,27 @@
 #'Img_Mat = mnist_data$Images
 #'Img_Label = mnist_data$Labels
 #'
-#'N = 100                       ##### Use only 100 images
+#'                              ##### Use 100 images
 #'
-#'X = Img_Mat[1:N, ]            ### X: 100 x 784 matrix
-#'Y = Img_Label[1:N]            ### Y: 100 x 1 vector
+#'X = Img_Mat                   ### X: 100 x 784 matrix
+#'Y = Img_Label                 ### Y: 100 x 1 vector
 #'
 #'lst = TrainBuddle(Y, X, train.ratio=0.6, arrange=TRUE, batch.size=10, total.iter = 100, 
 #'                  hiddenlayer=c(20, 10), batch.norm=TRUE, drop=TRUE, 
 #'                  drop.ratio=0.1, lr=0.1, init.weight=0.1, 
 #'                  activation=c("Relu","SoftPlus"), optim="AdaGrad", 
 #'                  type = "Classification", rand.eff=TRUE, distr = "Logistic", disp=TRUE)
+#'
+#'
+#'confusion.matrix = lst$confusion.matrix
+#'precision = lst$precision
+#'
+#'confusion.matrix
+#'precision
+#'
+#'
+#'
+#'
 #'
 #'
 #'###############   Regression example  
@@ -112,7 +136,7 @@
 #'
 #'lst = TrainBuddle(Y, X, train.ratio=0.7, arrange=FALSE, batch.size=20, total.iter = 100, 
 #'                  hiddenlayer=c(20), batch.norm=TRUE, drop=TRUE, drop.ratio=0.1, lr=0.1, 
-#'                  init.weight=0.1, activation=c("Identity"), optim="Adam", 
+#'                  init.weight=0.1, activation=c("Identity"), optim="AdaGrad", 
 #'                  type = "Regression", rand.eff=FALSE, disp=TRUE)
 #'
 #'
@@ -219,6 +243,15 @@ TrainBuddle = function(formula.string, data, train.ratio=0.7, arrange=0, batch.s
   ###################### Split X and T into train and test
 
   nTrain = floor(n*Train_ratio)
+  
+  if(nTrain<=10){
+    
+    print(paste("The size of the train set is "+ nTrain, ". Increase the train ratio or get more data.", sep="") )
+    
+  }
+  
+  
+  
   if(bArrange==1){
     
     lYX = Split2TrainTest(Y, X, Train_ratio)
@@ -255,9 +288,29 @@ TrainBuddle = function(formula.string, data, train.ratio=0.7, arrange=0, batch.s
   dimmT = dim(T_train)
   r = dimmT[1]
   
+  nPerEpoch = nTrain/nBatch_Size
+  nEpoch = floor(nTotal_Iterations/nPerEpoch)
+  
   if(nBatch_Size>=nTrain){
-    nBatch_Size = min(1, floor(nTrain/2) )
+    
+    print("The batch size is bigger than the size of the train set.")
+    print("The half of the size of the train set will be tried as a new batch size.")
+    
+    nBatch_Size = floor(nTrain/2)
+    
+    if(nBatch_Size==0){
+      stop("Batch size is 0.")
+    }
+    
+  }else{
+    if(nEpoch==0){
+      
+      print("The number of epoch is zero. Increase total iteration number, reduce the train ratio, or increase the batch size.")
+      stop()
+    }
+    
   }
+  
   
   ############################### Start Buddle
   
@@ -340,15 +393,12 @@ TrainBuddle = function(formula.string, data, train.ratio=0.7, arrange=0, batch.s
 #'
 #'data(mnist_data)
 #'
-#'Img_Mat = mnist_data$Images
-#'Img_Label = mnist_data$Labels
-#'
-#'N = 100                       
-#'
-#'X1 = Img_Mat[1:N, ]            ### X1: 100 x 784 matrix
-#'Y1 = Img_Label[1:N]          ### Y1: 100 x 1 vector
+#'X1 = mnist_data$Images       ### X1: 100 x 784 matrix
+#'Y1 = mnist_data$Labels       ### Y1: 100 x 1 vector
 #'
 #'
+#'
+#'############################# Train Buddle
 #'
 #'lst = TrainBuddle(Y1, X1, train.ratio=0.6, arrange=TRUE, batch.size=10, total.iter = 100, 
 #'                  hiddenlayer=c(20, 10), batch.norm=TRUE, drop=TRUE, 
@@ -362,10 +412,12 @@ TrainBuddle = function(formula.string, data, train.ratio=0.7, arrange=0, batch.s
 #'lParam = lst[[3]]
 #'
 #'
-#'X2 = Img_Mat[(N+1):(N+20), ]                  ### X2: 20-by-784 matrix
-#'#'
+#'X2 = matrix(rnorm(20*784,0,1), 20,784)  ## Genderate a 20-by-784 matrix
 #'
-#'FetchBuddle(X2, lW, lb, lParam)
+#'lst = FetchBuddle(X2, lW, lb, lParam)   ## Pass X2 to FetchBuddle for prediction
+#'
+#'
+#'
 #'
 #'
 #'@references
@@ -424,6 +476,7 @@ FetchBuddle = function(X, lW, lb, lParam){
 #'
 #'lst = CheckNonNumeric(X)
 #'
+#'lst
 #'
 #'@export
 #'@seealso GetPrecision(), FetchBuddle(), MakeConfusionMatrix(), OneHot2Label(), Split2TrainTest(), TrainBuddle()
@@ -484,11 +537,30 @@ CheckNonNumeric = function(X){
 #'
 #'data(iris)
 #'
+#'Label = c("setosa", "versicolor", "virginica")
+#'
+#'
 #'train.ratio=0.8
 #'Y = iris$Species 
 #'X = cbind( iris$Sepal.Length, iris$Sepal.Width, iris$Petal.Length, iris$Petal.Width)
 #'
 #'lst = Split2TrainTest(Y, X, train.ratio)
+#'
+#'Ytrain = lst$y.train
+#'Ytest = lst$y.test
+#'
+#'length(Ytrain)
+#'length(Ytest)
+#'
+#'length(which(Ytrain==Label[1]))
+#'length(which(Ytrain==Label[2]))
+#'length(which(Ytrain==Label[3]))
+#'
+#'length(which(Ytest==Label[1]))
+#'length(which(Ytest==Label[2]))
+#'length(which(Ytest==Label[3]))
+#'
+#'
 #'
 #'
 #'@export
@@ -606,6 +678,11 @@ Split2TrainTest=function(Y, X, train.ratio){
 #'
 #'pred.label = OneHot2Label(OHE, Label)
 #'
+#'pred.label
+#'
+#'
+#'
+#'
 #'@export
 #'@seealso CheckNonNumeric(), GetPrecision(), FetchBuddle(), MakeConfusionMatrix(), Split2TrainTest(), TrainBuddle()
 #'@importFrom Rcpp evalCpp 
@@ -656,6 +733,13 @@ OneHot2Label = function(OHE, Label){
 #'
 #'confusion.matrix = MakeConfusionMatrix(predicted.label, true.label, Label)
 #'precision = GetPrecision(confusion.matrix)
+#'
+#'confusion.matrix
+#'precision
+#'
+#'
+#'
+#'
 #'
 #'@export
 #'@seealso CheckNonNumeric(), GetPrecision(), FetchBuddle(), OneHot2Label(), Split2TrainTest(), TrainBuddle()
@@ -721,6 +805,10 @@ MakeConfusionMatrix = function(predicted.label, true.label, Label){
 #'
 #'confusion.matrix = MakeConfusionMatrix(predicted.label, true.label, Label)
 #'precision = GetPrecision(confusion.matrix)
+#'
+#'confusion.matrix
+#'precision
+#'
 #'
 #'@export
 #'@seealso CheckNonNumeric(), FetchBuddle(), MakeConfusionMatrix(), OneHot2Label(), Split2TrainTest(), TrainBuddle()

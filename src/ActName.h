@@ -1,6 +1,6 @@
 
-#ifndef __ACTNAME_H
-#define __ACTNAME_H
+#ifndef xxACTNAME_H
+#define xxACTNAME_H
 
 String strRegression("Regression");
 String strClassification("Classification");

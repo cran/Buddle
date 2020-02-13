@@ -1,6 +1,6 @@
 
-#ifndef __SINUSOID_H
-#define __SINUSOID_H
+#ifndef xxSINUSOID_H
+#define xxSINUSOID_H
 
 
 class Sinusoid{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  Sinusoid(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Sinusoid(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -53,8 +53,8 @@ void Sinusoid::forward(arma::mat X){
 }
 
 
-void Sinusoid::backward(arma::mat _X, arma::mat _dOut){
-  dOut = _dOut% cos(_X) ;
+void Sinusoid::backward(arma::mat xX, arma::mat xdOut){
+  dOut = xdOut% cos(xX) ;
 
 }
 

@@ -31,11 +31,30 @@ Convert data into training and test sets so that the training set contains appro
 
 data(iris)
 
+Label = c("setosa", "versicolor", "virginica")
+
+
 train.ratio=0.8
 Y = iris$Species 
 X = cbind( iris$Sepal.Length, iris$Sepal.Width, iris$Petal.Length, iris$Petal.Width)
 
 lst = Split2TrainTest(Y, X, train.ratio)
+
+Ytrain = lst$y.train
+Ytest = lst$y.test
+
+length(Ytrain)
+length(Ytest)
+
+length(which(Ytrain==Label[1]))
+length(which(Ytrain==Label[2]))
+length(which(Ytrain==Label[3]))
+
+length(which(Ytest==Label[1]))
+length(which(Ytest==Label[2]))
+length(which(Ytest==Label[3]))
+
+
 
 
 }

@@ -1,6 +1,6 @@
 
-#ifndef __FINV_H
-#define __FINV_H
+#ifndef xxFINV_H
+#define xxFINV_H
 
 
 class FInv{
@@ -22,13 +22,13 @@ public:
     n=1;
   }
   
-  FInv(int _q, int _n, String _strDist ) // Constructor
-    : Out(_q, _n), dOut((_q+2), _n) { // Default matrix member variable initialization
+  FInv(int xq, int xn, String xstrDist ) // Constructor
+    : Out(xq, xn), dOut((xq+2), xn) { // Default matrix member variable initialization
     
-    q = _q;
-    n = _n;
+    q = xq;
+    n = xn;
   
-    strDist = _strDist;
+    strDist = xstrDist;
 
     Out.zeros();
     dOut.zeros();
@@ -39,7 +39,7 @@ public:
   arma::mat Get_dOut();
 
   void forward(arma::mat v);
-  void backward(arma::mat v, arma::mat _dOut);
+  void backward(arma::mat v, arma::mat xdOut);
   
   
 };
@@ -61,9 +61,9 @@ void FInv::forward(arma::mat v){
 }
 
 
-void FInv::backward(arma::mat v, arma::mat _dOut){
+void FInv::backward(arma::mat v, arma::mat xdOut){
 
-  dOut = dfi(v, Out, _dOut, strDist);     ///_dOut: qxn
+  dOut = dfi(v, Out, xdOut, strDist);     ///xdOut: qxn
                                           ///dOut: q2xn  
 }
 

@@ -90,7 +90,7 @@ A list of the following values:
 }
 }
 \description{
-Build a multi-layer feed-forward neural network model for statistical classification and regression analysis.
+Build a multi-layer feed-forward neural network model for statistical classification and regression analysis with random effects.
 }
 \examples{
 ####################
@@ -107,11 +107,24 @@ Build a multi-layer feed-forward neural network model for statistical classifica
 # disp = TRUE                          #### Display intemeidate results during iterations.
 
 
+data(iris)
+
 lst = TrainBuddle("Species~Sepal.Width+Petal.Width", iris, train.ratio=0.6, 
          arrange=TRUE, batch.size=10, total.iter = 100, hiddenlayer=c(20, 10), 
          batch.norm=TRUE, drop=TRUE, drop.ratio=0.1, lr=0.1, init.weight=0.1, 
          activation=c("Relu","SoftPlus"), optim="Nesterov", 
          type = "Classification", rand.eff=TRUE, distr = "Normal", disp=TRUE)
+
+lW = lst$lW
+lb = lst$lb
+lParam = lst$lParam
+
+confusion.matrix = lst$confusion.matrix
+precision = lst$precision
+
+confusion.matrix
+precision
+
 
 ### Another classification example 
 ### Using mnist data
@@ -122,16 +135,27 @@ data(mnist_data)
 Img_Mat = mnist_data$Images
 Img_Label = mnist_data$Labels
 
-N = 100                       ##### Use only 100 images
+                             ##### Use 100 images
 
-X = Img_Mat[1:N, ]            ### X: 100 x 784 matrix
-Y = Img_Label[1:N]            ### Y: 100 x 1 vector
+X = Img_Mat                   ### X: 100 x 784 matrix
+Y = Img_Label                 ### Y: 100 x 1 vector
 
 lst = TrainBuddle(Y, X, train.ratio=0.6, arrange=TRUE, batch.size=10, total.iter = 100, 
                  hiddenlayer=c(20, 10), batch.norm=TRUE, drop=TRUE, 
                  drop.ratio=0.1, lr=0.1, init.weight=0.1, 
                  activation=c("Relu","SoftPlus"), optim="AdaGrad", 
                  type = "Classification", rand.eff=TRUE, distr = "Logistic", disp=TRUE)
+
+
+confusion.matrix = lst$confusion.matrix
+precision = lst$precision
+
+confusion.matrix
+precision
+
+
+
+
 
 
 ###############   Regression example  
@@ -155,7 +179,7 @@ Y = X \%*\% b + e                     ### Y=X b + e
 
 lst = TrainBuddle(Y, X, train.ratio=0.7, arrange=FALSE, batch.size=20, total.iter = 100, 
                  hiddenlayer=c(20), batch.norm=TRUE, drop=TRUE, drop.ratio=0.1, lr=0.1, 
-                 init.weight=0.1, activation=c("Identity"), optim="Adam", 
+                 init.weight=0.1, activation=c("Identity"), optim="AdaGrad", 
                  type = "Regression", rand.eff=FALSE, disp=TRUE)
 
 

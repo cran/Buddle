@@ -1,6 +1,6 @@
 
-#ifndef __GAUSSIAN_H
-#define __GAUSSIAN_H
+#ifndef xxGAUSSIAN_H
+#define xxGAUSSIAN_H
 
 
 class Gaussian{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  Gaussian(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Gaussian(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _X, arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xX, arma::mat xdOut);
   
   
 };
@@ -46,12 +46,17 @@ arma::mat Gaussian::Get_dOut(){
 }
 
 void Gaussian::forward(arma::mat X){
-  Out = exp(-X%X);  
+  
+  arma::mat XX = -X%X;
+  
+  Out = exp(XX);  
 }
 
 
-void Gaussian::backward(arma::mat _X, arma::mat _dOut){
-  dOut = 2*_dOut % _X % exp(-_X%_X);
+void Gaussian::backward(arma::mat xX, arma::mat xdOut){
+  
+  arma::mat XX = -xX%xX;
+  dOut = 2*xdOut % xX % exp(XX);
 
 }
 

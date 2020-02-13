@@ -1,6 +1,6 @@
 
-#ifndef __SIGMOID_H
-#define __SIGMOID_H
+#ifndef xxSIGMOID_H
+#define xxSIGMOID_H
 
 
 class Sigmoid{
@@ -20,19 +20,19 @@ public:
     p=0;
   }
   
-  Sigmoid(int _p, int _n) // Constructor
-    : Out(_p, _n), dOut(_p, _n) { // Default matrix member variable initialization
+  Sigmoid(int xp, int xn) // Constructor
+    : Out(xp, xn), dOut(xp, xn) { // Default matrix member variable initialization
     
-    n = _n;
-    p = _p;
+    n = xn;
+    p = xp;
     
   }
   
   arma::mat Get_Out();
   arma::mat Get_dOut();
   
-  void forward(arma::mat _X);
-  void backward(arma::mat _dOut);
+  void forward(arma::mat xX);
+  void backward(arma::mat xdOut);
   
   
 };
@@ -64,10 +64,10 @@ void Sigmoid::forward(arma::mat X){
 }
 
 
-void Sigmoid::backward(arma::mat _dOut){
+void Sigmoid::backward(arma::mat xdOut){
 
   
-  dOut =  ( (1-Out)%Out ) %_dOut;
+  dOut =  ( (1-Out)%Out ) %xdOut;
   // arma::vec x(p);
   // x.zeros();
   // 
@@ -75,7 +75,7 @@ void Sigmoid::backward(arma::mat _dOut){
   // 
   // for(int i=1;i<=n;i++){
   //   x = Out.col(i-1);
-  //   dOut.col(i-1) =  ( (1-x)%x )  % _dOut.col(i-1) ;
+  //   dOut.col(i-1) =  ( (1-x)%x )  % xdOut.col(i-1) ;
   // }
 
 

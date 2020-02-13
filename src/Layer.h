@@ -1,6 +1,6 @@
 
-#ifndef __LAYER_H
-#define __LAYER_H
+#ifndef xxLAYER_H
+#define xxLAYER_H
 
 
 class Layer{
@@ -65,37 +65,37 @@ public:
     n=1;
   }
   
-  Layer(int _q, int _p, int _n, int _bAct, int _bBatch, int _bDrop, int _bTest, double _drop_ratio, 
-        double _d_learning_rate, double _d_initial_weight, String _strAct, String _strOpt, int _bRand, String _strDist)
-    : affine(Affine(_q, _p, _n, _bRand, _strDist)), relu(Relu(_q,_n)), sigmoid(Sigmoid(_q,_n)), leakyrelu(LeakyRelu(_q,_n)),
-      tanh(TanH(_q,_n)), arctan(ArcTan(_q,_n)), arcsinh(ArcSinH(_q,_n)),
-      elliotsig(ElliotSig(_q,_n)), softplus(SoftPlus(_q,_n)),
-      bentidentity(BentIdentity(_q,_n)), sinusoid(Sinusoid(_q,_n)), identity(Identity(_q,_n)),
-      gaussian(Gaussian(_q,_n)), sinc(Sinc(_q,_n)),
-      dropout( Dropout(_q, _n, _bTest, _drop_ratio)), batchnorm(Batchnorm(_q,_n)),
-      W(_q,_p), b(_q,1), dW(_q,_p), db(_q,1), v((_q+2),1), dv((_q+2),1),
-      opt(Optimization(_q, _p, _bRand, _d_learning_rate, _strOpt)),
-      Out(_q,_n), dOut(_p,_n) { // Default matrix member variable initialization
+  Layer(int xq, int xp, int xn, int xbAct, int xbBatch, int xbDrop, int xbTest, double xdrop_ratio, 
+        double xd_learning_rate, double xd_initial_weight, String xstrAct, String xstrOpt, int xbRand, String xstrDist)
+    : affine(Affine(xq, xp, xn, xbRand, xstrDist)), relu(Relu(xq,xn)), sigmoid(Sigmoid(xq,xn)), leakyrelu(LeakyRelu(xq,xn)),
+      tanh(TanH(xq,xn)), arctan(ArcTan(xq,xn)), arcsinh(ArcSinH(xq,xn)),
+      elliotsig(ElliotSig(xq,xn)), softplus(SoftPlus(xq,xn)),
+      bentidentity(BentIdentity(xq,xn)), sinusoid(Sinusoid(xq,xn)), identity(Identity(xq,xn)),
+      gaussian(Gaussian(xq,xn)), sinc(Sinc(xq,xn)),
+      dropout( Dropout(xq, xn, xbTest, xdrop_ratio)), batchnorm(Batchnorm(xq,xn)),
+      W(xq,xp), b(xq,1), dW(xq,xp), db(xq,1), v((xq+2),1), dv((xq+2),1),
+      opt(Optimization(xq, xp, xbRand, xd_learning_rate, xstrOpt)),
+      Out(xq,xn), dOut(xp,xn) { // Default matrix member variable initialization
     
     
-    bRand=_bRand;
-    strDist = _strDist;
+    bRand=xbRand;
+    strDist = xstrDist;
     
-    q = _q;
-    p = _p;
-    n = _n;
+    q = xq;
+    p = xp;
+    n = xn;
     
     
-    bAct = _bAct;
-    bBatch=_bBatch;
-    bDrop=_bDrop;
-    bTest=_bTest;
-    drop_ratio=_drop_ratio;
-    d_learning_rate = _d_learning_rate;
-    d_initial_weight = _d_initial_weight;
+    bAct = xbAct;
+    bBatch=xbBatch;
+    bDrop=xbDrop;
+    bTest=xbTest;
+    drop_ratio=xdrop_ratio;
+    d_learning_rate = xd_learning_rate;
+    d_initial_weight = xd_initial_weight;
     
-    strOpt = _strOpt;
-    strAct = _strAct; 
+    strOpt = xstrOpt;
+    strAct = xstrAct; 
      
     W.randn(q, p);
     b.zeros();
@@ -105,11 +105,15 @@ public:
     
     W *= d_initial_weight;
     b *= d_initial_weight;
+    double dp2 = p/2;
+    double dp = p;
     
     if(strAct == strRelu || strAct == strLeakyRelu){
-      W /= sqrt(p/2);
+      dp2 = std::sqrt(dp2);
+      W /= dp2;
     }else{
-      W /= sqrt(p);
+      dp = std::sqrt(dp);
+      W /= dp;
     }
     
     
@@ -130,10 +134,10 @@ public:
   arma::mat Get_dv();  
   
   
-  void Set_W(arma::mat _W);
-  void Set_b(arma::mat _b);
+  void Set_W(arma::mat xW);
+  void Set_b(arma::mat xb);
   
-  void Set_v(arma::mat _v);
+  void Set_v(arma::mat xv);
   
   
   void forward(arma::mat X);
@@ -180,20 +184,20 @@ arma::mat Layer::Get_dv(){
 
 
 
-void Layer::Set_W(arma::mat _W){
+void Layer::Set_W(arma::mat xW){
   
-  W = _W;
+  W = xW;
 }
 
 
-void Layer::Set_b(arma::mat _b){
+void Layer::Set_b(arma::mat xb){
   
-  b=_b;
+  b=xb;
 }
 
-void Layer::Set_v(arma::mat _v){
+void Layer::Set_v(arma::mat xv){
   
-  v=_v;
+  v=xv;
 }
 
 
@@ -276,105 +280,105 @@ void Layer::forward(arma::mat X){
 }
 
 
-void Layer::backward(arma::mat _X, arma::mat _dOut){
+void Layer::backward(arma::mat xX, arma::mat xdOut){
 
   if(bAct == 1){
     if(bDrop==1){
-      dropout.backward(_dOut);
-      _dOut = dropout.Get_dOut();
+      dropout.backward(xdOut);
+      xdOut = dropout.Get_dOut();
     }
     
     if(strAct == strRelu){
-      relu.backward(_dOut);
-      _dOut = relu.Get_dOut();
+      relu.backward(xdOut);
+      xdOut = relu.Get_dOut();
     }else if(strAct == strSigmoid){
-      sigmoid.backward(_dOut);
-      _dOut = sigmoid.Get_dOut();
+      sigmoid.backward(xdOut);
+      xdOut = sigmoid.Get_dOut();
     }else if(strAct == strLeakyRelu){
-      leakyrelu.backward(_dOut);
-      _dOut = leakyrelu.Get_dOut();
+      leakyrelu.backward(xdOut);
+      xdOut = leakyrelu.Get_dOut();
     }else if(strAct == strTanH){
-      tanh.backward(_dOut);
-      _dOut = tanh.Get_dOut();
+      tanh.backward(xdOut);
+      xdOut = tanh.Get_dOut();
     }else if(strAct == strArcTan){
       
       if(bDrop==1){
-        arctan.backward(dropout.Get_Out(), _dOut);
+        arctan.backward(dropout.Get_Out(), xdOut);
       }else{
-        arctan.backward(affine.Get_Out(), _dOut);
+        arctan.backward(affine.Get_Out(), xdOut);
       }
-        _dOut = arctan.Get_dOut();
+        xdOut = arctan.Get_dOut();
     }else if(strAct == strArcSinH){
       
       if(bDrop==1){
-        arcsinh.backward(dropout.Get_Out(), _dOut);
+        arcsinh.backward(dropout.Get_Out(), xdOut);
       }else{
-        arcsinh.backward(affine.Get_Out(), _dOut);
+        arcsinh.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = arcsinh.Get_dOut();
+      xdOut = arcsinh.Get_dOut();
     }else if(strAct == strElliotSig){
       
       if(bDrop==1){
-        elliotsig.backward(dropout.Get_Out(), _dOut);
+        elliotsig.backward(dropout.Get_Out(), xdOut);
       }else{
-        elliotsig.backward(affine.Get_Out(), _dOut);
+        elliotsig.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = elliotsig.Get_dOut();
+      xdOut = elliotsig.Get_dOut();
     }else if(strAct == strSoftPlus){
       
       if(bDrop==1){
-        softplus.backward(dropout.Get_Out(), _dOut);
+        softplus.backward(dropout.Get_Out(), xdOut);
       }else{
-        softplus.backward(affine.Get_Out(), _dOut);
+        softplus.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = softplus.Get_dOut();
+      xdOut = softplus.Get_dOut();
     }else if(strAct == strBentIdentity){
       
       if(bDrop==1){
-        bentidentity.backward(dropout.Get_Out(), _dOut);
+        bentidentity.backward(dropout.Get_Out(), xdOut);
       }else{
-        bentidentity.backward(affine.Get_Out(), _dOut);
+        bentidentity.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = bentidentity.Get_dOut();
+      xdOut = bentidentity.Get_dOut();
     }else if(strAct == strSinusoid){
       
       if(bDrop==1){
-        sinusoid.backward(dropout.Get_Out(), _dOut);
+        sinusoid.backward(dropout.Get_Out(), xdOut);
       }else{
-        sinusoid.backward(affine.Get_Out(), _dOut);
+        sinusoid.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = sinusoid.Get_dOut();
+      xdOut = sinusoid.Get_dOut();
     }else if(strAct == strGaussian){
       
       if(bDrop==1){
-        gaussian.backward(dropout.Get_Out(), _dOut);
+        gaussian.backward(dropout.Get_Out(), xdOut);
       }else{
-        gaussian.backward(affine.Get_Out(), _dOut);
+        gaussian.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = gaussian.Get_dOut();
+      xdOut = gaussian.Get_dOut();
     }else if(strAct == strSinc){
       
       if(bDrop==1){
-        sinc.backward(dropout.Get_Out(), _dOut);
+        sinc.backward(dropout.Get_Out(), xdOut);
       }else{
-        sinc.backward(affine.Get_Out(), _dOut);
+        sinc.backward(affine.Get_Out(), xdOut);
       }
-      _dOut = sinc.Get_dOut();
+      xdOut = sinc.Get_dOut();
     }else{
-      identity.backward(_dOut);
-      _dOut = identity.Get_dOut();
+      identity.backward(xdOut);
+      xdOut = identity.Get_dOut();
       
     }
     
     
     if(bBatch==1){
-      batchnorm.backward(_dOut);
-      _dOut = batchnorm.Get_dOut();
+      batchnorm.backward(xdOut);
+      xdOut = batchnorm.Get_dOut();
     }
     
   }
   
-  affine.backward(_X, _dOut);
+  affine.backward(xX, xdOut);
   dOut = affine.Get_dOut();
   
   dW = affine.Get_dW();

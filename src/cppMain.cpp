@@ -29,9 +29,7 @@ using namespace Rcpp;
 #include "L2loss.h"
 #include "Optimization.h"
 #include "Layer.h"
-#include "gLayer.h"
 #include "Buddle.h"
-#include "gBuddle.h"
 
 
 
@@ -128,8 +126,8 @@ List Buddle_Main(arma::mat X_train, arma::mat T_train, arma::mat X_test, arma::m
       d_test_accuracy = BClass_predict.Get_Accuracy();
       
       if(bDisp==1){
-        printf("Iteration, loss, and accuracy of training are %d, %.3f, %.3f \n", i, dLoss, dAccuracy);
-        printf("Epoch, loss and accuracy of test are %d, %.3f, and %.3f \n", nInc, d_test_loss, d_test_accuracy);
+        Rprintf("Iteration, loss, and accuracy of training are %i, %.3f, %.3f \n", i, dLoss, dAccuracy);
+        Rprintf("Epoch, loss and accuracy of test are %i, %.3f, and %.3f \n", nInc, d_test_loss, d_test_accuracy);
         
       }
       
